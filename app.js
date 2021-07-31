@@ -10,6 +10,10 @@ document.addEventListener('DOMContentLoaded', () => {
     let upTimerId 
     let downTimerId
     let isJumping = true
+    let isGoingLeft = false
+    let isGoingRight = false
+    let leftTimerId
+    let righTimerId 
 
     function createDoodler() {
         // puts doodler inside grid 
@@ -111,14 +115,50 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function control(e) {
         if (e.key === 'ArrowLeft') {
-            // move left
+            moveLeft()
         } else if (e.key === 'ArrowRight') {
-            // move right
+            moveRight()
         } else if (e.key === 'ArrowUp') {
-            // moveStraight
+            moveStraight()
         }
     }
 
+    function moveLeft() {
+        if (isGoingRight) {
+            clearInterval(rightTimerId)
+            isGoingRight = false
+        }
+        isGoingLeft = true
+        lefTimerId = setInterval(function () {
+            if (doodlerLeftSpace >= 0) {
+
+                doodlerLeftSpace -=5
+                doodler.style.left = doodlerLeftSpace + 'px'
+            } else moveRight()
+            // sets it every 30 milliseconds.
+        },30)
+    }
+
+    function moveRight() {
+        if (isGoingLeft) {
+            clearInterval(leftTimerId)
+            isGoingLeft = false
+        }
+        isGoingRight = true
+        rightTimerId = setInterval(function () {
+            if (doodlerLeftSpace <= 340) {
+                doodlerLeftSpace += 5
+                doodlerLeftSpace + 'px'
+            } else moveLeft()
+        },30)
+    }
+
+    function moveStraight() {
+        isGoingRight = false
+        isGoingLeft = false
+        clearInterval(rightTimerId)
+        clearInterval(leftTimerId)
+    }
 
     // doodler appears if this function is evoked
     function start() {
@@ -128,6 +168,7 @@ document.addEventListener('DOMContentLoaded', () => {
             createDoodler()
             setInterval(movePlatforms, 30)
             jump()
+            document.addEventListener('keyup', control)
 
         }
     }
@@ -136,8 +177,5 @@ document.addEventListener('DOMContentLoaded', () => {
 })
 
 
-
-
-// https://www.youtube.com/watch?v=8xPsg6yv7TU&list=RDCMUC8butISFwT-Wl7EV0hUK0BQ&index=4
-// 38:13
-
+// https://www.youtube.com/watch?v=8xPsg6yv7TU&list=RDCMUC8butISFwT-Wl7EV0hUK0BQ&index=5
+// 44:50

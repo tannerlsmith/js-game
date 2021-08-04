@@ -13,7 +13,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let isGoingLeft = false
     let isGoingRight = false
     let leftTimerId
-    let righTimerId 
+    let rightTimerId 
+    let score = 0
 
     function createDoodler() {
         // puts doodler inside grid 
@@ -61,6 +62,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 let visual = platform.visual
                 visual.style.bottom = platform.bottom + 'px'
 
+                if (platform.bottom < 10) {
+
+                    let firstPlatform = platforms[0].visual
+                        firstPlatform.classList.remove('platform')
+                    // shift removes first item of an array. 
+                    platforms.shift()
+                    score++
+                    console.log(platforms)
+                    // When one platform disappears, a new one will reappear at the top.
+                    let newPlatform = new Platform(600)
+                    platforms.push(newPlatform)
+                }
             }) 
         }
     }
@@ -109,8 +122,15 @@ document.addEventListener('DOMContentLoaded', () => {
     function gameOver() {
         console.log('game over')
         isGameOver = true
+        while (grid.firstChild) {
+            grid.removeChild(grid.firstChild)
+        }
+        grid.innerHTML = score
+        // removes glitching whem doodler moves
         clearInterval(upTimerId)
         clearInterval(downTimerId)
+        clearInterval(leftTimerId)
+        clearInterval(rightTimerId)
     }
 
     function control(e) {
@@ -136,7 +156,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 doodler.style.left = doodlerLeftSpace + 'px'
             } else moveRight()
             // sets it every 30 milliseconds.
-        },30)
+        },20)
     }
 
     function moveRight() {
@@ -150,7 +170,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 doodlerLeftSpace += 5
                 doodlerLeftSpace + 'px'
             } else moveLeft()
-        },30)
+        },20)
     }
 
     function moveStraight() {
@@ -162,7 +182,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // doodler appears if this function is evoked
     function start() {
-        // if game is NOT over, we create doodler.
         if (!isGameOver) {
             createPlatforms()
             createDoodler()
@@ -175,7 +194,3 @@ document.addEventListener('DOMContentLoaded', () => {
     // attach to button later.
     start()
 })
-
-
-// https://www.youtube.com/watch?v=8xPsg6yv7TU&list=RDCMUC8butISFwT-Wl7EV0hUK0BQ&index=5
-// 44:50

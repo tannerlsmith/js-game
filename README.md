@@ -1,5 +1,5 @@
 # js-game
-This game is from a tutorial done by freeCodeCamp.org's Youtube channel:
+This game is from a tutorial done by freeCodeCamp.org's Youtube channel: <br>
 https://www.youtube.com/watch?v=8xPsg6yv7TU&list=RDCMUC8butISFwT-Wl7EV0hUK0BQ&index=7
 
 Deployed link: 
